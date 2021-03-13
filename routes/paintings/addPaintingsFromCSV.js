@@ -63,7 +63,9 @@ exports.addPaintingsFromCSV = async (req, res) => {
             });
             paintingAlreadyInDatabase.seriesList = newSeriesList;
           } else if (key !== "sold")
-            paintingAlreadyInDatabase[key] = painting[key].trim();
+            if (typeof painting[key] === "string")
+              paintingAlreadyInDatabase[key] = painting[key].trim();
+            else paintingAlreadyInDatabase[key] = painting[key];
         });
         const updatedPainting = await paintingAlreadyInDatabase.save();
         paintingsUpdated.push(updatedPainting);
