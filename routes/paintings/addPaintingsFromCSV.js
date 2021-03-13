@@ -11,6 +11,7 @@ exports.addPaintingsFromCSV = async (req, res) => {
   let paintings;
   try {
     paintings = await convertCSVtoJSON(files.csv.path);
+    console.log(paintings[Object.keys(paintings)[0]]);
   } catch (err) {
     return res
       .status(400)
@@ -47,8 +48,6 @@ exports.addPaintingsFromCSV = async (req, res) => {
     }
   });
 
-  console.log("paintings: ", paintings);
-
   for (const painting of paintings) {
     try {
       paintingAlreadyInDatabase = await Painting.findOne({
@@ -73,7 +72,7 @@ exports.addPaintingsFromCSV = async (req, res) => {
         paintingsAdded.push(addedPainting);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       errors.push({ error: error, paintingTitle: painting.title });
     }
   }
